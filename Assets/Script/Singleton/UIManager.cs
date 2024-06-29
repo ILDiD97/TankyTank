@@ -70,8 +70,11 @@ public class UIManager : Singleton<UIManager>
 
     public void TimeFormStart()
     {
-        fadeOut.Play();
-        StartCoroutine(StartFade());
+        if (fadeOut)
+        {
+            fadeOut.Play();
+            StartCoroutine(StartFade());
+        }
         
     }
 

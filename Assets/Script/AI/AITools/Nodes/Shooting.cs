@@ -34,10 +34,10 @@ public class Shooting : IBehaviourNode
                 return false;
             }
         }
-        else
-        {
-            currentTime = Time.time;
-        }
+        //else
+        //{
+        //    currentTime = Time.time;
+        //}
         return false;
 
 
