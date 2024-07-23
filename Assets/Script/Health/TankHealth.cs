@@ -21,6 +21,7 @@ public class TankHealth : MonoBehaviour, IDamageable
             fire.Play();
             flames.Play();
             aI.Dead = true;
+            aI.DeadSequence();
         }
         GameStatus.Instance.CalculateEnemyHealth();
     }

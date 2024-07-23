@@ -44,10 +44,10 @@ public class AlertConditionalDecorator : IBehaviourNode
     private EAlarm ControlAlert()
     {
         if (enemyAI.SeePlayer())
-        {
             return EAlarm.SeeAlert;
-        }
-        else if (enemyAI.MyBase.Alarm == EAlarm.SeeAlert) return EAlarm.Warning;
-        else return EAlarm.Patrol;
+        else if (enemyAI.MyBase.Alarm == EAlarm.SeeAlert) 
+            return EAlarm.Warning;
+        else 
+            return EAlarm.Patrol;
     }
 }

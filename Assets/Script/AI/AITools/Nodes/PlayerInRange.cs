@@ -28,6 +28,9 @@ public class PlayerInRange : IBehaviourNode
         }
         else
         {
+            if(currentEnemy.View.PlayerRef)
+                currentEnemy.RotateToTarget(
+                    currentEnemy.View.PlayerRef.transform.position);
             currentEnemy.SetAgentSpeed(8);
             currentMovement.Execute();
         }

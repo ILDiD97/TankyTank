@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour, IFloating, IShootable
+public class PlayerController : MonoBehaviour, IShootable
 {
+    [SerializeField]
+    private PlayerInput input;
 
     [SerializeField] 
     private GameObject cameraPivot;
@@ -25,7 +28,7 @@ public class PlayerController : MonoBehaviour, IFloating, IShootable
 
     [SerializeField]
     private LayerMask mask;
-
+    
     private bool dead;
 
     [SerializeField]
@@ -46,12 +49,6 @@ public class PlayerController : MonoBehaviour, IFloating, IShootable
 
     private float accellerationLerp;
 
-    [SerializeField]
-    [Range(0,1)]
-    private float floatingSpeed;
-
-    [SerializeField]
-    private float escurtion = 0.5f;
 
     [SerializeField]
     private float projectileAccelleration;
@@ -68,6 +65,7 @@ public class PlayerController : MonoBehaviour, IFloating, IShootable
     private void Awake()
     {
         transform.position = new Vector3(500, 0, 0);
+        input.actions["Fire"].started += Shooting;
     }
 
     // Update is called once per frame
@@ -75,11 +73,11 @@ public class PlayerController : MonoBehaviour, IFloating, IShootable
     {
         if (!Dead)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Shoot();
-                shooting.Play();
-            }
+            //if (Input.GetMouseButtonDown(0))
+            //{
+                //Shoot();
+                //shooting.Play();
+            //}
             if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100, mask))
             {
                 Vector3 lookPoint = new Vector3(hit.point.x, turret.position.y, hit.point.z);
@@ -94,11 +92,20 @@ public class PlayerController : MonoBehaviour, IFloating, IShootable
         }
     }
 
+    private void Shooting(InputAction.CallbackContext context)
+    {
+        if (!Dead)
+        {
+            Shoot();
+        }
+    }
+
     public void Shoot()
     {
         GameObject ammo = Instantiate(projectile, cannon.position, transform.localRotation);
         ammo.GetComponent<Rigidbody>().AddRelativeForce(cannon.forward * projectileAccelleration, ForceMode.Impulse);
         ammo.GetComponent<Projectile>().spawnerName = gameObject.name;
+        shooting.Play();
     }
 
     private void PlayerMoving(Vector3 move)
@@ -174,8 +181,8 @@ public class PlayerController : MonoBehaviour, IFloating, IShootable
     
     }
 
-    public void Floating()
-    {
-        tank.localPosition = new Vector3(0, Mathf.Sin(Time.time * floatingSpeed) * escurtion, 0);
-    }
+    //public void Floating()
+    //{
+    //    tank.localPosition = new Vector3(0, Mathf.Sin(Time.time * floatingSpeed) * escurtion, 0);
+    //}
 }

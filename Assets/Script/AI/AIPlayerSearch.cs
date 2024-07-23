@@ -4,76 +4,67 @@ using UnityEngine;
 using UnityEngine.AI;
 using TrueRandomInteger;
 
-public class AIPlayerSearch : MonoBehaviour, IShootable, IFloating, ITracks
+public class AIPlayerSearch : MonoBehaviour, IShootable, ITracks
 {
     [SerializeField]
     protected EnemyBaseParameter enemyParameter;
 
     [SerializeField] 
-    private NavMeshAgent tank;
+    protected NavMeshAgent tank;
 
     [SerializeField]
-    private FactoryBase myBase;
+    protected FactoryBase myBase;
 
     [SerializeField] 
-    private GameObject projectile;
+    protected GameObject projectile;
 
     [SerializeField] 
-    private GameObject player;
+    protected GameObject player;
 
     [SerializeField]
-    private Renderer tracks;
+    protected Renderer tracks;
 
     [SerializeField]
-    private FieldOfView view;
-
-    [SerializeField] 
-    private Transform cannon;
+    protected FieldOfView view;
 
     [SerializeField]
-    private Transform turret;
+    protected Transform cannon;
 
     [SerializeField]
-    private Transform tankBase;
+    protected Transform turret;
 
     [SerializeField]
-    private AudioSource shooting;
-
-    private CellSpace space;
+    protected Transform tankBase;
 
     [SerializeField]
-    private EAlarm alarm;
+    protected AudioSource shooting;
+
+    protected CellSpace space;
 
     [SerializeField]
-    private Vector3 currentPosition;
-
-    private IBehaviourNode root;
+    protected EAlarm alarm;
 
     [SerializeField]
-    private float timeToShoot = 2;
+    protected Vector3 currentPosition;
+
+    protected IBehaviourNode root;
 
     [SerializeField]
-    private float projectileAccelleration = 5;
+    protected float projectileAccelleration = 5;
 
     [SerializeField]
-    private float speed;
+    protected float speed;
 
     [SerializeField]
-    private float floatingSpeed = 1;
+    protected float minDistanceToShoot;
 
     [SerializeField]
-    private float escurtion = 0.3f;
+    protected int health;
 
     [SerializeField]
-    private float minDistanceToShoot;
+    protected int enemyID = -1;
 
-    [SerializeField]
-    private int health;
-
-    [SerializeField]
-    private int enemyID = -1;
-
-    private bool dead;
+    protected bool dead;
 
     public FieldOfView View { get => view; }
 
@@ -94,6 +85,8 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, IFloating, ITracks
     public float MinDistanceToShoot { get => minDistanceToShoot; }
 
     public int EnemyID { get => enemyID; set => enemyID = value; }
+
+    public IBehaviourNode Root { get => root; set => root = value; }
 
     private void Start()
     {
@@ -120,7 +113,7 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, IFloating, ITracks
         #endregion
         #region "SeeAlert"
         IBehaviourNode movementNode = new Movement(this);
-        IBehaviourNode shootNode = new Shooting(this, timeToShoot);
+        IBehaviourNode shootNode = new Shooting(this, enemyParameter.TimeToShoot);
         IBehaviourNode inRange = new PlayerInRange(this, shootNode, movementNode);
         IBehaviourNode seeAlertNode = new SeePlayerDecorator(this, inRange);
         #endregion
@@ -153,23 +146,37 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, IFloating, ITracks
         else return false;
     }
 
-    public bool RotateTurret(float rotateSpeed)
+    public bool RotateTurretOnPrediction()
     {
         float targetAngle = CalculateTargetAngle(PredictPlayerPosition());
         float currentAngle = turret.eulerAngles.y;
         float angleDelta = Mathf.DeltaAngle(currentAngle, targetAngle);
-        turret.eulerAngles += new Vector3(0, angleDelta * rotateSpeed * Time.deltaTime, 0);
+        //float angleBlend = Mathf.LerpAngle(turret.eulerAngles.y, angleDelta, EnemyParameter.RotateTurretSpeed);
+        turret.eulerAngles += new Vector3(0, angleDelta * 
+            enemyParameter.RotateTurretSpeed * Time.deltaTime, 0);
         return isAiming(targetAngle);
     }
 
-    private Vector3 PredictPlayerPosition()
+    public void RotateToTarget(Vector3 target)
+    {
+        float targetAngle = CalculateTargetAngle(target);
+        float currentAngle = turret.eulerAngles.y;
+        //float angleBlend = Mathf.LerpAngle(turret.eulerAngles.y,
+           //targetAngle, EnemyParameter.RotateTurretSpeed * Time.deltaTime);
+        float angleDelta = Mathf.DeltaAngle(currentAngle, targetAngle);
+        turret.eulerAngles += new Vector3(0, 
+            angleDelta * enemyParameter.RotateTurretSpeed * Time.deltaTime, 0);
+    }
+
+
+    public Vector3 PredictPlayerPosition()
     {
         float timeToReach = Vector3.Distance(transform.position, player.transform.position) 
             / minDistanceToShoot;
         return View.PlayerRef.transform.position + view.PlayerSpeed * timeToReach;
     }
 
-    private float CalculateTargetAngle(Vector3 lookPosition)
+    public float CalculateTargetAngle(Vector3 lookPosition)
     {
         Debug.DrawLine(cannon.position, lookPosition);
         Vector3 direction = (lookPosition - turret.position).normalized;
@@ -177,7 +184,7 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, IFloating, ITracks
         return angle < 0 ? 360 + angle : angle;
     }
 
-    private bool isAiming(float angle)
+    public bool isAiming(float angle)
     {
         float turretAngle = turret.eulerAngles.y < 0 ? 
             360 + turret.eulerAngles.y : turret.eulerAngles.y;
@@ -190,7 +197,7 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, IFloating, ITracks
         space = FindCell();
     }
 
-    private CellSpace FindCell()
+    public CellSpace FindCell()
     {
         CellSpace cell = space;
         
@@ -218,6 +225,19 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, IFloating, ITracks
         MoveTracks(speed);
     }
 
+    public void DeadSequence()
+    {
+        myBase.ReorganizeTeam(enemyID);
+        myBase.SpawnTeam();
+        StartCoroutine(DestroingSequence());
+    }
+
+    protected IEnumerator DestroingSequence()
+    {
+        yield return new WaitForSeconds(10);
+        Destroy(gameObject);
+    }
+
     private void Update()
     {
         if (!Dead && root != null)
@@ -226,72 +246,40 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, IFloating, ITracks
         }
     }
 
-    //private void ChooseTask()
-    //{
-    //    if (View.FieldOfViewCheck(playerLayer, obstructionLayer, 50))
-    //    {
-    //        ShootOrFollow();
-    //    }
-    //    else
-    //    {
-    //        PatrolRandomSearch();
-    //    }
-    //}
-
-    //private void ShootOrFollow()
-    //{
-    //    if (Vector3.Distance(transform.position, player.transform.position) < minDistance)
-    //    {
-    //        tank.speed = 0;
-    //        transform.LookAt(player.transform);
-    //    }
-    //    else
-    //    {
-    //        tank.speed = speed;
-    //        tank.SetDestination(player.transform.position);
-    //    }
-    //    if (!attacking && Vector3.Distance(transform.position, player.transform.position) < MinDistanceToShoot)
-    //    {
-    //        attacking = true;
-    //        Shoot();
-    //        shooting.Play();
-    //    }
-    //}
-
-    //private void PatrolRandomSearch()
-    //{
-    //    tank.speed = speed;
-    //    if (timer >= timeToMove || Vector3.Distance(transform.position, patrolPosition) < distanceFromPatrol)
-    //    {
-    //        Vector3 randomPosition = new Vector3(transform.position.x + Random.Range(-25,25), 
-    //            0, transform.position.z + Random.Range(-25, 25));
-    //        if (tank.Raycast(randomPosition, out NavMeshHit hit))
-    //        {
-    //            patrolPosition = hit.position;
-    //            timer = 0;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        tank.SetDestination(patrolPosition);
-    //        timer += Time.deltaTime;
-    //    }
-    //}
-
     public void Shoot()
     {
         GameObject ammo = Instantiate(projectile, cannon.position, cannon.localRotation);
         ammo.GetComponent<Rigidbody>().AddRelativeForce(cannon.forward * projectileAccelleration, ForceMode.Impulse);
         ammo.GetComponent<Projectile>().spawnerName = gameObject.name;
+        shooting.PlayOneShot(shooting.clip);
     }
 
-    public void Floating()
-    {
-        tankBase.localPosition = new Vector3(0, Mathf.Sin(Time.time * floatingSpeed) * escurtion, 0);
-    }
+    //public void Floating()
+    //{
+    //    tankBase.localPosition = new Vector3(0, Mathf.Sin(Time.time * floatingSpeed) * escurtion, 0);
+    //}
 
     public void MoveTracks(float speed)
     {
-        tracks.material.SetFloat("_MaxMoveSpeed", speed / 8);
+        if(tracks.material.GetFloat("_MaxMoveSpeed") != speed / enemyParameter.Speed)
+        TrackAccelleration(speed);
+    }
+
+    protected void TrackAccelleration(float speed)
+    {
+        float currentAccelleration = tracks.material.GetFloat("_MaxMoveSpeed");
+        if(speed == enemyParameter.Speed)
+        {
+            if (currentAccelleration < 1)
+                currentAccelleration += Time.deltaTime * 1;
+            else currentAccelleration = 1;
+        }
+        else
+        {
+            if (currentAccelleration > 0)
+                currentAccelleration -= Time.deltaTime * 1;
+            else currentAccelleration = 0;
+        }
+        tracks.material.SetFloat("_MaxMoveSpeed", currentAccelleration);
     }
 }

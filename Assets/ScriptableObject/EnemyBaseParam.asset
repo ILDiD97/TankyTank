@@ -18,5 +18,7 @@ MonoBehaviour:
   obstruction:
     serializedVersion: 2
     m_Bits: 448
-  distanceOfView: 50
+  distanceOfView: 60
   speed: 8
+  rotateTurretSpeed: 5
+  timeToShoot: 3

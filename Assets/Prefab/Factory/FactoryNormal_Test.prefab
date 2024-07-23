@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 4469655142554397209}
   - component: {fileID: 363579624717612322}
   m_Layer: 0
-  m_Name: FactoryNormal
+  m_Name: FactoryNormal_Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5c1181cde59b1478dd3951e620e7f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 111699101615845214, guid: 135d44de0ebf2c34bbb90c050e83dcc9,
+  enemyPrefab: {fileID: 5956897068718249868, guid: 12bcdf049f8175a489605d5745da5589,
     type: 3}
   myTeamMate: []
   alarm: 3

@@ -20,7 +20,7 @@ public class Shooting : IBehaviourNode
 
     public bool Execute()
     {
-        if(aiPlayerSearch.RotateTurret(30))
+        if(aiPlayerSearch.RotateTurretOnPrediction())
         {
             if(timerToShoot >= currentTime + shootingTime)
             {

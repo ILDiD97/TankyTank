@@ -93,6 +93,7 @@ public class FactoryBase : MonoBehaviour
 
     public void ReorganizeTeam(int id)
     {
+        MyTeamMate.RemoveAt(id);
         foreach(AIPlayerSearch enemy in MyTeamMate)
         {
             if (enemy.EnemyID > id) enemy.EnemyID--;
@@ -148,6 +149,10 @@ public class FactoryBase : MonoBehaviour
         if (EvaluateAlert())
         {
             AlertState();
+        }
+        else
+        {
+            alarm = EAlarm.Patrol;
         }
     }
 
