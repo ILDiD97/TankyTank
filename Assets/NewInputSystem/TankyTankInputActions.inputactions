@@ -15,10 +15,28 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Accelleration",
+                    "type": "Button",
+                    "id": "66b57737-eb4c-41ef-bdf3-0eac0d226bd8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "RotateTurret",
                     "type": "Value",
                     "id": "6b444451-8a00-4d00-a97e-f47457f736a8",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Digital",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "e2a2d317-5ca9-4a9c-8b1a-f16d7a9bfd79",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -31,15 +49,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Look",
-                    "type": "Value",
-                    "id": "e2a2d317-5ca9-4a9c-8b1a-f16d7a9bfd79",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -210,11 +219,44 @@
                 },
                 {
                     "name": "",
+                    "id": "8960cfb0-792a-4336-aa98-30b585aa9990",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "Invert",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7e7f03f-a642-42fe-b76b-08113695ac17",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "98118adb-c193-4c27-8221-9402cba0910e",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "143bb1cd-cc10-4eca-a2f0-a3664166fe91",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
+                    "groups": "Gamepad",
                     "action": "FirePrincipal",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -225,7 +267,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse",
                     "action": "FirePrincipal",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -236,7 +278,7 @@
                     "path": "<Touchscreen>/primaryTouch/tap",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Touch",
+                    "groups": "Touch",
                     "action": "FirePrincipal",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -265,34 +307,23 @@
                 },
                 {
                     "name": "",
-                    "id": "8960cfb0-792a-4336-aa98-30b585aa9990",
-                    "path": "<Keyboard>/q",
+                    "id": "53eb75ec-c8c2-4156-b140-0afed70e82eb",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Look",
+                    "action": "Accelleration",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "f7e7f03f-a642-42fe-b76b-08113695ac17",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "Invert",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "98118adb-c193-4c27-8221-9402cba0910e",
-                    "path": "<Gamepad>/rightStick/y",
+                    "id": "918e2eaf-bfab-4eeb-a764-e1acaf4ba3a4",
+                    "path": "<Keyboard>/rightShift",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Look",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Accelleration",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

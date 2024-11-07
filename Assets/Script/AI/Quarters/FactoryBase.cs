@@ -67,23 +67,27 @@ public class FactoryBase : MonoBehaviour
     {
         int wait = 3;
         yield return new WaitForSeconds(wait);
+        if (health > 0)
+        {
+            Vector3 location = new Vector3(transform.position.x - 5, transform.position.y, transform.position.z);
+            int cellLocation = TrueRandomInteger.TrueRandomInteger.GetRandomIntgerForList(ownCell.obstaclePositions.Count);
+            GameObject mate = Instantiate(enemyPrefab, location, Quaternion.identity);
 
-        Vector3 location = new Vector3(transform.position.x - 5, transform.position.y, transform.position.z);
-        int cellLocation = TrueRandomInteger.TrueRandomInteger.GetRandomIntgerForList(ownCell.obstaclePositions.Count);
-        GameObject mate = Instantiate(enemyPrefab, location, Quaternion.identity);
+            AIPlayerSearch currentMate = mate.GetComponent<AIPlayerSearch>();
+            currentMate.Space = ownCell;
+            currentMate.MyBase = this;
+            currentMate.EnemyID = myTeamMate.Count;
+            myTeamMate.Add(currentMate);
 
-        AIPlayerSearch currentMate = mate.GetComponent<AIPlayerSearch>();
-        currentMate.Space = ownCell;
-        currentMate.MyBase = this;
-        currentMate.EnemyID = myTeamMate.Count;
-        myTeamMate.Add(currentMate);
+            GameStatus.Instance.PopulateEnemies(currentMate);
+            GameStatus.Instance.CalculateEnemyHealth();
 
-        GameStatus.Instance.PopulateEnemies(currentMate);
-        GameStatus.Instance.CalculateEnemyHealth();
+            yield return new WaitForSeconds(waitToSpawn - wait);
 
-        yield return new WaitForSeconds(waitToSpawn - wait);
+            SpawnTeam();
 
-        SpawnTeam();
+        }
+
     }
 
     public void GetPlayerPosition(int teamMateID)

@@ -227,8 +227,12 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, ITracks
 
     public void DeadSequence()
     {
-        myBase.ReorganizeTeam(enemyID);
-        myBase.SpawnTeam();
+        if (MyBase)
+        {
+            myBase.ReorganizeTeam(enemyID);
+            myBase.SpawnTeam();
+        }
+        
         StartCoroutine(DestroingSequence());
     }
 
@@ -243,6 +247,11 @@ public class AIPlayerSearch : MonoBehaviour, IShootable, ITracks
         if (!Dead && root != null)
         {
             BehaviourTree.Instance.TreeRootUpdate(root);
+        }
+        else
+        {
+            tank.speed = 0;
+            MoveTracks(0);
         }
     }
 

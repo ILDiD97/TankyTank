@@ -64,6 +64,7 @@ public class BoardGenerator : MonoBehaviour
     {
         //print(board.Length);
         StartCells(false);
+        floorMaxNumber = PlayerPrefs.GetInt("Level") * 5;
     }
 
     public void StartCells(bool isEditor)
@@ -221,10 +222,15 @@ public class BoardGenerator : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        foreach (NavigationBuilder navigation in FindObjectsOfType<NavigationBuilder>())
+        NavigationBuilder[] builders = 
+            FindObjectsByType<NavigationBuilder>(FindObjectsSortMode.InstanceID);
+
+        foreach (NavigationBuilder navigation in builders)
         {
             navigation.Refresh();
         }
+
+        GameStatus.Instance.IsGameOn = true;
         
     }
 

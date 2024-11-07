@@ -166,6 +166,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: JEntranceNord
       objectReference: {fileID: 0}
+    - target: {fileID: 2150225008253412103, guid: 5b431c78e9a37534ea9c5dd82439970e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2824675950415055166, guid: 5b431c78e9a37534ea9c5dd82439970e,
         type: 3}
       propertyPath: m_RootOrder

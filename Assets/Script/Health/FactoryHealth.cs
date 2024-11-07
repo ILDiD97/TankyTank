@@ -26,9 +26,11 @@ public class FactoryHealth : MonoBehaviour, IDamageable
 
     private IEnumerator StartDestroing()
     {
-        yield return new WaitForSeconds(10);
-        Destroy(gameObject);
-        foreach (NavigationBuilder navigation in FindObjectsOfType<NavigationBuilder>())
+        yield return new WaitForSeconds(2);
+        Destroy(factoryBase.gameObject);
+        NavigationBuilder[] builders =
+            FindObjectsByType<NavigationBuilder>(FindObjectsSortMode.InstanceID);
+        foreach (NavigationBuilder navigation in builders)
         {
             navigation.Refresh();
         }

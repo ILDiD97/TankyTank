@@ -39,9 +39,15 @@ public class OptionsManager : MonoBehaviour
         MusicMixer.SetFloat("MusicVolume", musicVolume);
     }
 
-    public void ChoiceLevel(string name)
+    public void ChoiceLevel(int level)
     {
-        SceneManager.LoadScene(name);
+        PlayerPrefs.SetInt("Level", level);
+        SceneManager.LoadScene("Level1");
+    }
+
+    public void ToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void ApplicationQuit()

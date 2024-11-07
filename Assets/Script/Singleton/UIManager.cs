@@ -61,11 +61,13 @@ public class UIManager : Singleton<UIManager>
     public void PauseTime()
     {
         Time.timeScale = 0;
+        GameStatus.Instance.IsGameOn = false;
     }
 
     public void ResumeTime()
     {
         Time.timeScale = 1;
+        GameStatus.Instance.IsGameOn = true;
     }
 
     public void TimeFormStart()

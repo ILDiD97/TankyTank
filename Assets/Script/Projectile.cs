@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         IDamageable health = other.GetComponent<IDamageable>();
-        if (health != null && other.tag != spawnerName)
+        if (health != null && other.name != spawnerName)
         {
             health.Damage(damage);
         }

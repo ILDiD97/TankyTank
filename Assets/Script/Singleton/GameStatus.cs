@@ -21,12 +21,12 @@ public class GameStatus : Singleton<GameStatus>
     private int factoriesHealth;
 
     [SerializeField]
-    private bool gameStatus;
+    private bool isGameOn;
 
     public bool IsGameOn
     {
-        get { return gameStatus; }
-        set { gameStatus = value; }
+        get { return isGameOn; }
+        set { isGameOn = value; }
     }
 
     private void Awake()
@@ -61,7 +61,7 @@ public class GameStatus : Singleton<GameStatus>
     public void SetStartGame(bool active)
     {
         player.Dead = active;
-        gameStatus = active;
+        isGameOn = active;
         foreach(AIPlayerSearch game in enemies)
         {
             game.Dead = active;
@@ -100,7 +100,7 @@ public class GameStatus : Singleton<GameStatus>
     {
         if(enemiesHealth <= 0 && factoriesHealth <= 0)
         {
-            gameStatus = true;
+            isGameOn = true;
             UIManager.Instance.Win();
         }
     }

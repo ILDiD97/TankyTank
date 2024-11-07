@@ -296,9 +296,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41384e31c9913004b8c86fc155d54d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  input: {fileID: 0}
   cameraPivot: {fileID: 2298754560879818236}
   projectile: {fileID: 76542943460637762, guid: 817bb0b8e8c5cb44ab986110593b994e,
     type: 3}
+  mainCameraobj: {fileID: 2298754562511195373}
   turret: {fileID: 4287722698198888131}
   cannon: {fileID: 2298754561324040242}
   tank: {fileID: 5925074015689664087}
@@ -306,15 +308,16 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 512
+  moveVector: {x: 0, y: 0, z: 0}
   rotationSpeed: 90
   speed: 8
   accelleration: 2
   accellerationLerpSpeed: 3
-  floatingSpeed: 0.5
-  escurtion: 0.1
   projectileAccelleration: 16
   cameraRotationSpeed: 60
+  cameraRotateDirection: 0
   health: 3
+  inputTurret: {x: 0, y: 0}
 --- !u!82 &2298754560980205417
 AudioSource:
   m_ObjectHideFlags: 0
